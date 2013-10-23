@@ -8,19 +8,35 @@ define(function (require) {
         tpl                 = require('text!tpl/Carte.html'),
         Kinetic             = require('kinetic'),
         io                  = require('socketio'),
-        template = _.template(tpl),
-        myself              ="",
-        socket              ="";
+        template            = _.template(tpl),
+        myself              = "",
+        socket              = "";
 
     return Backbone.View.extend({
 
         initialize: function (options) {
             myself = this;
+            this.barres = this.collection.myself.toJSON();
+            console.log(this.barres);
+            myself.initPos();
             myself.render();
-             socket = io.connect('http://192.168.31.35:8080');
+            socket = io.connect('http://192.168.31.35:8080');
             model: options.model;
         },
+        initPos: function (){
 
+            for(var i = 0; i < 10; i++)
+            {
+                new myself.model;
+            }
+
+
+            //Définition de toute les coordonnées de départ
+            socket.emit('init_position', {
+
+            });
+
+        },
         render: function () {
             myself.$el.html(template());
             myself.drawTheBarre();
@@ -38,21 +54,6 @@ define(function (require) {
             var rect = new Kinetic.Rect(myself.model.toJSON());
             layer.add(rect);
             stage.add(layer);
-             console.log('fin drawTheBarre');
-             rect.on('dragmove', function() {
-                 console.log('onMove');
-                 console.log(this);
-                 //reasigné au model backbone les nouvelles valeurs
-                 myself.model.set({x:this.attrs.x,y:this.attrs.x});
-                 //envoyer le tout au serveur pour afficher la nouvelle position sur l'autre écran
-                 console.log(myself.model);
-                socket.emit('targetMove',{
-                    id : myself.model.get('id'),
-                    x : myself.model.get('y'),
-                    y : myself.model.get('y')
-                }); // Transmet le message aux autres
-             
-             }); 
         }
 
     });

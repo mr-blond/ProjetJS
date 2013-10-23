@@ -1,4 +1,4 @@
-## Employee Directory ##
+# Employee Directory ##
 
 ### Sample Mobile/PhoneGap Application built with Backbone.js, RequireJS and Topcoat ###
 
