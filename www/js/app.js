@@ -5,7 +5,7 @@ require.config({
     paths: {
         app: '../app',
         tpl: '../tpl',
-        socketio : 'http://192.168.74.50:8080/socket.io/socket.io.js'
+        socketio : 'http://192.168.31.35:8080/socket.io/socket.io.js'
     },
 
     map: {
@@ -22,7 +22,7 @@ require.config({
         },
         'socketio': {
         exports: 'io'
-      },
+      }
     }
 });
 

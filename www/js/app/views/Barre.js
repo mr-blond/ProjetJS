@@ -6,7 +6,7 @@ define(function (require) {
         _                   = require('underscore'),
         Backbone            = require('backbone'),
         tpl                 = require('text!tpl/Carte.html'),
-        Easel             = require('easel'),
+        Kinetic             = require('kinetic'),
         io                  = require('socketio'),
         template = _.template(tpl),
         myself              ="",
@@ -17,7 +17,7 @@ define(function (require) {
         initialize: function (options) {
             myself = this;
             myself.render();
-             socket = io.connect('http://192.168.74.50:8080');
+             socket = io.connect('http://192.168.31.35:8080');
             model: options.model;
         },
 
@@ -43,9 +43,14 @@ define(function (require) {
                  console.log('onMove');
                  console.log(this);
                  //reasigné au model backbone les nouvelles valeurs
-                 myself.model.set({x:this.attrs.x,y:this.attrs.x})
+                 myself.model.set({x:this.attrs.x,y:this.attrs.x});
                  //envoyer le tout au serveur pour afficher la nouvelle position sur l'autre écran
-                socket.emit('targetMove', myself.model.toJSON()); // Transmet le message aux autres
+                 console.log(myself.model);
+                socket.emit('targetMove',{
+                    id : myself.model.get('id'),
+                    x : myself.model.get('y'),
+                    y : myself.model.get('y')
+                }); // Transmet le message aux autres
              
              }); 
         }

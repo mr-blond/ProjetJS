@@ -18,7 +18,7 @@ define(function (require) {
                 stroke: 'black',
                 strokeWidth: 4,
                 offset: [0, 0],
-                draggable: true,
+                draggable: true
             },
             initialize: function () {
                 this.reports = new BarreCollection();

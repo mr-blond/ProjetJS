@@ -10,6 +10,7 @@ define(function (require) {
             urlRoot: "http://localhost:8080/barres",
             // ici sont les propriété pour décrire l'objet bar
             defaults: {
+                id:0,
                 x: 0,
                 y: 0,
                 width: 100,
