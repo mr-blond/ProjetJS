@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Test affichage goutelette</title>
+</head>
+<body onload="init();">
+<style>
+    #canvasPalier { position: absolute; }
+    #canvasDebug { background: #333333; }
+</style>
+<!--<script src="http://192.168.31.29:8080/socket.io/socket.io.js"></script>-->
+
+
+<canvas id="canvasPalier"></canvas>
+<canvas id="canvasGoutte"></canvas>
+<canvas id="canvasDebug" width="600" height="400"></canvas>
+
+<script src="js/polifill.js"></script>
+<script src="js/lib/Box2dWeb-2.1.a.3.min.js"></script>
+<script src="js/Gouttelette.js"></script>
+<script src="js/Palier.js"></script>
+<script src="js/Fluide.js"></script>
+<script src="js/main.js"></script>
+</body></html>
