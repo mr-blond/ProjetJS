@@ -8,7 +8,7 @@ Debuger.init = function()
     this.draw = new jeu.b2DebugDraw();
     this.draw.SetSprite(document.getElementById("canvasDebug").getContext("2d"));
     this.draw.SetFillAlpha(0.5);
-    this.draw.SetDrawScale(2.0);
+    this.draw.SetDrawScale(5.0);
     this.draw.SetLineThickness(1.0);
     this.draw.SetFlags(jeu.b2DebugDraw.e_shapeBit | jeu.b2DebugDraw.e_jointBit);
     jeu.world.SetDebugDraw(this.draw);

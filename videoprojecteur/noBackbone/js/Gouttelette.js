@@ -6,7 +6,7 @@ function Gouttelette() {
     this.vy = 0;
     this.px = 0;
     this.py = 0;
-    this.radius = 0;
+    this.radius = 5;
     this.canvas = null;
 }
 Gouttelette.prototype = {
