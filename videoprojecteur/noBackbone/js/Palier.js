@@ -1,13 +1,11 @@
 function Palier() {
     this.x = 0;
     this.y = 0;
-    this.px = 0;
-    this.py = 0;
     this.height = 0;
     this.width = 0;
-    this.canvas = null;
     this.angle = 0;
 }
+Palier.elements = Array();
 Palier.init = function()
 {
     Palier.canvas = document.getElementById('canvasPalier');
@@ -20,17 +18,16 @@ Palier.prototype = {
     init: function (properties) {
         Object.extend(this, properties);
 
-        this.px = this.x;
-        this.py = this.y;
-
-        //create some objects
+        //Objet box2d
         jeu.bodyDef.type = jeu.b2Body.b2_staticBody;
         jeu.fixDef.shape = new jeu.b2PolygonShape();
-        jeu.fixDef.shape.SetAsBox(80, 10);
+        jeu.fixDef.shape.SetAsBox(this.width / 2, this.height / 2);
         jeu.bodyDef.position.x = this.x;
         jeu.bodyDef.position.y = this.y;
         jeu.bodyDef.angle = this.angle;
         this.box2d = jeu.world.CreateBody(jeu.bodyDef).CreateFixture(jeu.fixDef);
+
+        Palier.elements.push(this);
     },
     update: function ()
     {
@@ -39,20 +36,29 @@ Palier.prototype = {
     },
     draw: function ()
     {
-
-        this.angle += 0.01;
-
         this.box2d.GetBody().SetAngle(this.angle);
-        //Palier.context.save();
-        Palier.context.translate(jeu.width / 2, jeu.height / 2);
+        Palier.context.save();
+        Palier.context.translate(this.x, this.y);
         Palier.context.rotate(this.angle);
         Palier.context.beginPath();
-        Palier.context.rect(this.x - jeu.width / 2, this.y - jeu.height / 2, this.height, this.width);
+        Palier.context.rect(-this.width / 2, -this.height / 2, this.width, this.height);
         Palier.context.fillStyle = 'yellow';
         Palier.context.fill();
         Palier.context.lineWidth = 1;
         Palier.context.strokeStyle = 'black';
         Palier.context.stroke();
-        //Palier.context.restore();
+        Palier.context.restore();
+    }
+};
+Palier.render = function() {
+
+    Palier.elements.forEach = function(entry) {
+        console.log('1');
+        entry.draw();
+    }
+
+    for (var i = 0, l = Palier.elements.length; i < l; i++) {
+        var particle = Palier.elements[i];
+        particle.draw();
     }
 };

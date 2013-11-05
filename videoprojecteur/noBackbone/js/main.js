@@ -16,102 +16,20 @@ function init() {
     jeu.b2MouseJointDef =  Box2D.Dynamics.Joints.b2MouseJointDef;
 
     jeu.world = new jeu.b2World(
-        new jeu.b2Vec2(0, 100)    //gravity
+        new jeu.b2Vec2(0, 9.8)    //gravity
         ,  true                 //allow sleep
     );
 
     jeu.fixDef = new jeu.b2FixtureDef;
     jeu.fixDef.density = 1.0;
     jeu.fixDef.friction = 0.5;
+    jeu.fixDef.scale = 100;
     jeu.fixDef.restitution = 0.2;
 
     jeu.bodyDef = new jeu.b2BodyDef;
 
-    //create ground
-    jeu.bodyDef.type = jeu.b2Body.b2_staticBody;
-    jeu.fixDef.shape = new jeu.b2PolygonShape;
-    jeu.fixDef.shape.SetAsBox(600, 2);
-    jeu.bodyDef.position.Set(10, 400 + 1.8);
-    jeu.world.CreateBody(jeu.bodyDef).CreateFixture(jeu.fixDef);
-    jeu.bodyDef.position.Set(10, -1.8);
-    jeu.world.CreateBody(jeu.bodyDef).CreateFixture(jeu.fixDef);
-    jeu.fixDef.shape.SetAsBox(2, 200);
-    jeu.bodyDef.position.Set(-1.8, 200);
-    jeu.world.CreateBody(jeu.bodyDef).CreateFixture(jeu.fixDef);
-    jeu.bodyDef.position.Set(600.8, 200);
-    jeu.world.CreateBody(jeu.bodyDef).CreateFixture(jeu.fixDef);
-
-    //setup debug draw
-    var debugDraw = new jeu.b2DebugDraw();
-    debugDraw.SetSprite(document.getElementById("canvasDebug").getContext("2d"));
-    debugDraw.SetFillAlpha(0.5);
-    debugDraw.SetLineThickness(1.0);
-    debugDraw.SetFlags(jeu.b2DebugDraw.e_shapeBit | jeu.b2DebugDraw.e_jointBit);
-    jeu.world.SetDebugDraw(debugDraw);
-
-    window.setInterval(update, 1000 / 60);
-
-    //mouse
-    var mouseX, mouseY, mousePVec, isMouseDown, selectedBody, mouseJoint;
-    var canvasPosition = getElementPosition(document.getElementById("canvasDebug"));
-
-    function getBodyAtMouse() {
-        mousePVec = new jeu.b2Vec2(mouseX, mouseY);
-        var aabb = new jeu.b2AABB();
-        aabb.lowerBound.Set(mouseX - 0.001, mouseY - 0.001);
-        aabb.upperBound.Set(mouseX + 0.001, mouseY + 0.001);
-
-        // Query the world for overlapping shapes.
-
-        selectedBody = null;
-        jeu.world.QueryAABB(getBodyCB, aabb);
-        return selectedBody;
-    }
-
-    function getBodyCB(fixture) {
-        if(fixture.GetBody().GetType() != jeu.b2Body.b2_staticBody) {
-            if(fixture.GetShape().TestPoint(fixture.GetBody().GetTransform(), mousePVec)) {
-                selectedBody = fixture.GetBody();
-                return false;
-            }
-        }
-        return true;
-    }
-
-    //update
-
-    function update() {
-
-        if(isMouseDown && (!mouseJoint)) {
-            var body = getBodyAtMouse();
-            if(body) {
-                var md = new jeu.b2MouseJointDef();
-                md.bodyA = jeu.world.GetGroundBody();
-                md.bodyB = body;
-                md.target.Set(mouseX, mouseY);
-                md.collideConnected = true;
-                md.maxForce = 300.0 * body.GetMass();
-                mouseJoint = jeu.world.CreateJoint(md);
-                body.SetAwake(true);
-            }
-        }
-
-        if(mouseJoint) {
-            if(isMouseDown) {
-                mouseJoint.SetTarget(new jeu.b2Vec2(mouseX, mouseY));
-            } else {
-                jeu.world.DestroyJoint(mouseJoint);
-                mouseJoint = null;
-            }
-        }
-
-        jeu.world.Step(1 / 60, 10, 10);
-        jeu.world.DrawDebugData();
-        jeu.world.ClearForces();
-    };
-
-    jeu.height = 400;
-    jeu.width = 600;
+    jeu.width = 1280;
+    jeu.height = 720;
 
     jeu.canvas = document.getElementById('canvasGoutte');
     jeu.canvas.height = jeu.height;
@@ -131,7 +49,11 @@ function init() {
     jeu.num_y = Math.round(jeu.height / jeu.spacing) + 1;
     jeu.fluid = new Fluid();
 
-    run();
+    jeu.generateur = new GenerateurGouttelette();
+    jeu.generateur.add({cooldown: 15});
+    Palier.init();
+    Level.init();
+    Debuger.init();
 
     function run() {
         requestAnimFrame(run);
@@ -140,37 +62,10 @@ function init() {
             jeu.grid[i].length = 0;
         jeu.fluid.update();
         jeu.fluid.render();
+        Debuger.update();
+        Palier.render();
+        jeu.generateur.affiche();
     }
-
-    //create some objects
-
-    Palier.init();
-
-    for(var i = 0; i < 3; ++i) {
-        var palier = new Palier();
-        palier.init({
-            x: Math.random() * jeu.width,
-            y: Math.random() * jeu.height,
-            height: 10,
-            width: 100,
-            angle: 0.5
-        })
-        jeu.fluid.particles.push(palier);
-    }
-
-
-    setInterval(function(){
-        var particle = new Gouttelette();
-        particle.init({
-            type: 1,
-            x: 50,
-            y: 20,
-            radius: 30
-        })
-        jeu.fluid.particles.push(particle);
-    }, 1000);
-
-
-
+    run();
 
 };
