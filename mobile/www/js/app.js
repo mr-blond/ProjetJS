@@ -5,7 +5,8 @@ require.config({
     paths: {
         app: '../app',
         tpl: '../tpl',
-        socketio : 'http://192.168.31.35:8080/socket.io/socket.io.js'
+        //@todo, trouver un moyen de chercher la valeur de l'adresse ip automatiquement
+        socketio : 'http://10.188.49.155:8080/socket.io/socket.io.js'
     },
 
     map: {
@@ -26,14 +27,14 @@ require.config({
     }
 });
 
-require(['jquery', 'backbone', 'app/router'], function ($, Backbone, Router) {
+require([/*'jquery',*/ 'backbone', 'app/router'], function (/*$, */Backbone, Router) {
 
     var router = new Router();
-
+/*
     $("body").on("click", ".back-button", function (event) {
         event.preventDefault();
         window.history.back();
     });
-
+*/
     Backbone.history.start();
 });

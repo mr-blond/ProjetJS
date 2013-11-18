@@ -1,0 +1,50 @@
+/*-----------import*/
+/*------------helper*/
+.vAlign {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 400px;
+}
+
+.hAlign {
+  margin: 0 auto;
+  width: 500px;
+}
+
+/*********/
+body {
+  background: url("images/fond.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.content {
+  background-color: #ffffff;
+  text-align: center;
+  text-align: left;
+  font-family: arial;
+  color: black;
+}
+.content h1 {
+  text-align: left;
+}
+.content a {
+  position: absolute;
+  bottom: 55px;
+  left: 0p;
+  padding: 15px;
+  /* text-align: center; */
+  background-color: white;
+  border: 3px solid #1a98ff;
+  color: #1a98ff;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: arial;
+  text-decoration: none;
+}

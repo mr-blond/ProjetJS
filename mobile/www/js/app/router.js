@@ -5,7 +5,7 @@ define(function (require) {
     var $           = require('jquery'),
         Backbone    = require('backbone'),
         PageSlider  = require('app/utils/pageslider'),
-        HomeView    = require('app/views/Home'),
+        HomeView    = require('app/views/HomeView'),
 
         slider = new PageSlider($('body')),
 
@@ -15,42 +15,41 @@ define(function (require) {
 
         routes: {
             "": "home",
-            "drawBarreScreen": "drawBarreScreen",
-            "createCreature": "createCreature",
-            "tchat" : "tchat"
+            "drawPalierScreen": "drawPalierScreen"
+            
         },
 
         home: function () {
             homeView.delegateEvents();
             slider.slidePage(homeView.$el);
-            console.log('dans home');
         },
 
-        drawBarreScreen: function (id) {
-            console.log('drawBarreScreen');
-            require(["app/models/Barre", "app/views/Barre"], function (models, view) {
-                var barreModel = new models.Barre();
-                var rectangleView = new view({ model: barreModel });
-               console.log( barreModel.get('x'));
-               barreModel.set({'x':15});
-                console.log( barreModel.get('x'));
-                slider.slidePage(rectangleView.$el);
-                  console.log('drawBarreScreen ready');
-            });
-        },
-        
-        createCreature : function (){
-            console.log('createCreature');
-        },
-        
-        tchat : function (){
-            console.log('dans le tchat');
-            require( ["app/views/tchat"], function (view) {
+        drawPalierScreen: function () {
+           
+            require(["app/collection/PalierCollection","app/models/PalierModel", "app/views/PalierView"], function (collection,models, view) {
+              console.log('dans drawBarreScreen');
               
-                slider.slidePage(new view().$el);
-                  console.log('drawBarreScreen ready');
+              
+              
+              //créer la collection à partir des infos sur le serveur
+              var maCollection = new collection.PalierCollection();
+              
+              var currentModel = '';
+              for(var i=0;i<5;i++){
+                  currentModel = new models.PalierModel({id:i,x:10*i,y:10*i});
+                 
+                  maCollection.add(currentModel);
+              }
+              
+              var palierView = new view({collection:maCollection});
+                homeView.delegateEvents();
+                slider.slidePage(palierView.$el);
+                palierView.createTheStage();
+                palierView.drawTheBarres();
             });
         }
+        
+      
 
        
     });

@@ -1,0 +1,50 @@
+/*-----------import*/
+@import "compass";
+$bgButton : #ffffff;
+$borderButton : #1A98FF;
+$textColorButton : #1A98FF;
+$normalText : #000000;
+
+/*------------helper*/
+.vAlign{
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    height: 400px;
+}
+.hAlign{
+    margin: 0 auto;
+    width: 500px;
+}
+/*********/
+body{
+    background: url('images/fond.jpg')no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.content{
+    background-color:  #ffffff;   
+
+    text-align: left;
+    color:$normalText;
+    //text-align:center;
+   
+    #bouton{
+        margin-top: 140px;
+    }
+    a{
+        
+        padding: 15px;
+        
+        background-color: $bgButton;
+        border: 3px solid $borderButton;
+        color: $textColorButton;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-family: arial;
+        text-decoration: none;
+    }
+}
