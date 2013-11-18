@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Test affichage goutelette</title>
+    <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+    <script src="js/polifill.js"></script>
+    <script src="js/lib/Box2dWeb-2.1.a.3.min.js"></script>
+    <script src="js/Box2DWrapper.js"></script>
+    <script src="js/Debuger.js"></script>
+    <script src="js/GenerateurGouttelette.js"></script>
+    <script src="js/Gouttelette.js"></script>
+    <script src="js/Palier.js"></script>
+    <script src="js/Level.js"></script>
+    <script src="js/Fluide.js"></script>
+    <script src="js/main.js"></script>
+    <!--<script src="http://localhost:8080/socket.io/socket.io.js"></script>-->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body onload="init();">
+    <div id="displayDataFromServ">
+        
+    </div>
+<canvas id="canvasPalier"></canvas>
+<canvas id="canvasGoutte"></canvas>
+<canvas id="canvasDebug"></canvas>
+
+<script>
+//ICI ecouter les événements envoyés par le serveur pour modifier la position des paliers
+
+            // Connexion à socket.io
+            var socket = io.connect('http://localhost:8080');
+            var mustTurn = 4;
+            socket.on('onTargetMove', function(data) {
+                $('#displayDataFromServ').prepend('<p>' + data.id + ' - ' + data.x + ' - ' + data.y  + ' - ' + data.rotation + '</p>');
+
+                Palier.move(data.id, data.x, data.y, data.rotation);
+
+                if(data.id !== mustTurn){
+                    mustTurn = data.id;
+                    var infoServo = {'pos':mustTurn*40,'pin':12};
+                    socket.emit('servo', infoServo); // Transmet le message aux autres
+                }
+            });
+            
+            
+        </script>
+</body></html>

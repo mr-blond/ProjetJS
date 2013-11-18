@@ -243,7 +243,12 @@ tmp/**
 .metadata
 tmp/**/*
 Thumbs.db
+mobile/platforms
+mobile/test
+mobile/config
 Desktop.ini
+node_modules
+.idea
 *.tmp
 *.bak
 *.swp

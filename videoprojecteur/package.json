@@ -1,0 +1,12 @@
+{
+    "name": "ProjetBiennal",
+    "version": "0.1.0",
+    "dependencies": {
+        "express": "~3.3.4",
+        "socket.io": "~0.9.16",
+        "serialport": "latest",
+        "ent": "~0.1.0"
+    },
+    "author": "Stefan & Julien <psid@gmail.fr>",
+    "description": "Application mobile pour une instalation destiné à la biennale de Lyon"
+}
