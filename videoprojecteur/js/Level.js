@@ -1,5 +1,6 @@
-function Level(){}
-
+function Level(){
+}
+Level.currentAngle = 0;
 Level.init = function()
 {
     Level.json = {
@@ -20,3 +21,12 @@ Level.init = function()
     var generateur = new GenerateurGouttelette;
     generateur.init({cooldown: 15});
 };
+Level.rotate = function(angle)
+{
+    var dif = this.currentAngle - angle;
+    Palier.rotate(dif);
+    GenerateurGouttelette.rotate(dif);
+    //Modifier la position des élemnts pose des problèmes a Box2D
+    //Tant que la rotation reste progressive, inutile de les déplacer
+    //Fluid.rotate(dif);
+}

@@ -4,8 +4,10 @@ function Gouttelette() {
     this.y = 0;
     this.vx = 0;
     this.vy = 0;
+    this.id = 0;
     this.canvas = null;
 }
+Gouttelette.elements = Array();
 Gouttelette.ratio_affichage = 3;
 Gouttelette.radius = 10;
 Gouttelette.init = function()
@@ -39,12 +41,33 @@ Gouttelette.init = function()
     Gouttelette.canvas.width = Const.width;
     Gouttelette.canvas_context = Gouttelette.canvas.getContext('2d');
 }
+Gouttelette.create = function(properties)
+{
+    var gouttelette = new Gouttelette();
+    gouttelette.init(properties);
+    Gouttelette.elements.push(gouttelette);
+}
+Gouttelette.update = function()
+{
+    for (var i = 0, l = this.elements.length; i < l; i++)
+    {
+        this.elements[i].draw();
+        if(this.elements[i].y > Const.hauteur_delestage)
+            Gouttelette.delete(i);
+    }
+}
+Gouttelette.delete = function(id)
+{
+    console.log('Gouttelette ' + id + ' supprimé');
+    Gouttelette.elements.splice(this.elements[id], 1);
+}
 Gouttelette.prototype =
 {
     constructor: Gouttelette,
     init: function (properties)
     {
         Object.extend(this, properties);
+        this.id = Gouttelette.elements.length;
 
         //create some objects
         Box2DWrapper.bodyDef.type = Box2DWrapper.b2Body.b2_dynamicBody;
@@ -58,15 +81,13 @@ Gouttelette.prototype =
             .CreateFixture(Box2DWrapper.fixDef);
         this.box2d.GetBody().GetLinearVelocity().x = this.vx;
         this.box2d.GetBody().GetLinearVelocity().y = this.vy;
-        
     },
-    rotation: function (rotation)
+    rotate: function (angle)
     {
-        var rotation = 0.01;
         this.x -= Const.width / 2;
         this.y -= Const.height / 2;
-        var newX = (this.x) * Math.cos(-rotation) - (this.y) * Math.sin(-rotation);
-        this.y   = (this.x) * Math.sin(-rotation) + (this.y) * Math.cos(-rotation);
+        var newX = (this.x) * Math.cos(-angle) - (this.y) * Math.sin(-angle);
+        this.y   = (this.x) * Math.sin(-angle) + (this.y) * Math.cos(-angle);
         this.x = newX;
         this.x += Const.width / 2;
         this.y += Const.height / 2;

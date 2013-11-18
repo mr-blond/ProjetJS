@@ -1,7 +1,6 @@
 function Fluid() { }
 Fluid.init = function()
 {
-    Fluid.particles = [];
     Fluid.threshold = 210;
 
     Fluid.canvas = document.getElementById('canvasGoutte');
@@ -11,12 +10,7 @@ Fluid.init = function()
 };
 Fluid.update = function ()
 {
-    for (var i = 0, l = this.particles.length; i < l; i++)
-    {
-        var particle = this.particles[i];
-
-        particle.draw();
-    }
+    Gouttelette.update();
     Fluid.render();
 },
 Fluid.render = function ()
@@ -32,13 +26,15 @@ Fluid.render = function ()
         }
         else if(data[i + 3] == Fluid.threshold)
         {
-
+            data[i+0] = 230;
+            data[i+1] = 50;
+            data[i+2] = 50;
         }
         else
         {
-            data[i+0] = 0;
-            data[i+1] = 0;
-            data[i+2] = 0;
+            data[i+0] = 230;
+            data[i+1] = 50;
+            data[i+2] = 50;
         }
     }
     Fluid.context.putImageData(image, 0, 0);

@@ -15,13 +15,33 @@ Palier.init = function()
 };
 Palier.update = function()
 {
+    Palier.context.clearRect(0, 0, Const.width, Const.height);
     for (var i = 0, l = Palier.elements.length; i < l; i++)
     {
         Palier.elements[i].draw();
     }
 };
+Palier.rotate = function(angle)
+{
+    for (var i = 0, l = Palier.elements.length; i < l; i++)
+    {
+        var palier = Palier.elements[i];
+
+        palier.x -= Const.width / 2;
+        palier.y -= Const.height / 2;
+        var newX = (palier.x) * Math.cos(-angle) - (palier.y) * Math.sin(-angle);
+        palier.y   = (palier.x) * Math.sin(-angle) + (palier.y) * Math.cos(-angle);
+        palier.x = newX;
+        palier.x += Const.width / 2;
+        palier.y += Const.height / 2;
+
+        palier.angle -= angle;
+
+        palier.box2d.GetBody().SetPosition(new Box2DWrapper.b2Vec2(palier.x * Const.scale, palier.y * Const.scale));
+    }
+};
 Palier.move = function(id, x, y, angle){
-    Palier.elements[i].moveTo(x, y, angle);
+    Palier.elements[id].moveTo(x, y, angle);
 }
 Palier.prototype = {
     constructor: Gouttelette,
@@ -63,7 +83,6 @@ Palier.prototype = {
     {
         this.x = x;
         this.y = y;
-        this.z = z;
         this.angle = angle;
 
         this.box2d.GetBody().SetPosition(new Box2DWrapper.b2Vec2(this.x * Const.scale, this.y * Const.scale));

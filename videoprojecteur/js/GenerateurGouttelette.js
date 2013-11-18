@@ -11,6 +11,21 @@ GenerateurGouttelette.init = GenerateurGouttelette.clear = function()
 {
     GenerateurGouttelette.elements = [];
 };
+GenerateurGouttelette.rotate = function(angle)
+{
+    for (var i = 0, l = GenerateurGouttelette.elements.length; i < l; i++)
+    {
+        var generateur = GenerateurGouttelette.elements[i];
+
+        generateur.x -= Const.width / 2;
+        generateur.y -= Const.height / 2;
+        var newX = (generateur.x) * Math.cos(-angle) - (generateur.y) * Math.sin(-angle);
+        generateur.y   = (generateur.x) * Math.sin(-angle) + (generateur.y) * Math.cos(-angle);
+        generateur.x = newX;
+        generateur.x += Const.width / 2;
+        generateur.y += Const.height / 2;
+    }
+};
 GenerateurGouttelette.update = function()
 {
     for (var i = 0, l = GenerateurGouttelette.elements.length; i < l; i++)
@@ -32,14 +47,11 @@ GenerateurGouttelette.prototype =
         if( 1 < this.cooldown)
         {
             this.cooldown = 0;
-            var gouttelette = new Gouttelette();
-            gouttelette.init({
+            Gouttelette.create({
                 type: 1,
-                x: 50,
-                y: 200,
-                vx: 0
+                x: this.x,
+                y: this.y
             });
-            Fluid.particles.push(gouttelette);
         }
     }
 };

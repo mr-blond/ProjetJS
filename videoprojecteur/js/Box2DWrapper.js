@@ -21,8 +21,13 @@ Box2DWrapper.init = function()
     //this.world.SetGravity(new this.b2Vec2( 0, -9.8));
 
     this.fixDef = new this.b2FixtureDef;
-    this.fixDef.density = 1.0;
+    this.fixDef.density = 100000.0;
     this.fixDef.friction = 0.3;
     this.fixDef.restitution = 0.2;
     this.bodyDef = new this.b2BodyDef;
 }
+Box2DWrapper.update = function()
+{
+    Box2DWrapper.world.Step(1 / 60, 10, 10);
+    Box2DWrapper.world.ClearForces();
+};

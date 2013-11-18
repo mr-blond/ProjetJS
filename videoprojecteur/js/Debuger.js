@@ -15,7 +15,5 @@ Debuger.init = function()
 }
 Debuger.update = function()
 {
-    Box2DWrapper.world.Step(1 / 60, 10, 10);
     Box2DWrapper.world.DrawDebugData();
-    Box2DWrapper.world.ClearForces();
 };
