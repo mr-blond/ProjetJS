@@ -23,17 +23,23 @@ io.sockets.on('connection', function (socket) {
         
         console.log(message);
         
-        //j'envois à tute les personnes sur le réseau l'information
+        //j'envois à toute les personnes sur le réseau l'information
         socket.broadcast.emit('onTargetMove', message);
    
     }); 
-    
+    // Controle du servo, data contient l'entrée PIN et la valeur de l'angle du servo
+    socket.on('stageRotation', function (data) {
+        console.log(data);
+      socket.broadcast.emit('stageRotation', data);
+   
+    }); 
     // Controle du servo, data contient l'entrée PIN et la valeur de l'angle du servo
     socket.on('servo', function (data) {
         console.log(data);
         serialPort.write('!'+data.pin+'-'+data.pos+':');
    
     }); 
+
     
     //reception d'info de la part de l'arduino
     /*serialPort.on('data', function (data){
