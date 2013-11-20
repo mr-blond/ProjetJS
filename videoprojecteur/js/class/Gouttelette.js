@@ -9,7 +9,7 @@ function Gouttelette() {
 }
 Gouttelette.elements = Array();
 Gouttelette.ratio_affichage = 3;
-Gouttelette.radius = 10;
+Gouttelette.radius = 5;
 Gouttelette.init = function()
 {
     //Mise en cache du dégradé de la goutte
@@ -51,14 +51,21 @@ Gouttelette.update = function()
 {
     for (var i = 0, l = this.elements.length; i < l; i++)
     {
-        this.elements[i].draw();
-        if(this.elements[i].y > Const.hauteur_delestage)
-            Gouttelette.delete(i);
+		//Il peut arriver qu'un élément soit supprimer en cours de boucle
+		//Bugfix: L'existence de la variable est testé pour évité ce cas de figure
+		//Todo: identifié ou se trouve l'accès concurent responsable de ce probléme
+		if(this.elements[i])
+		{
+			this.elements[i].draw();
+			if(this.elements[i].y > Const.hauteur_delestage)
+				Gouttelette.delete(i);
+		}
     }
 }
 Gouttelette.delete = function(id)
 {
     console.log('Gouttelette ' + id + ' supprimé');
+	bricksScheduledForRemoval.push(this.elements[id].box2d);
     Gouttelette.elements.splice(this.elements[id], 1);
 }
 Gouttelette.prototype =

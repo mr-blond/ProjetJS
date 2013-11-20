@@ -1,10 +1,14 @@
 Const = new Object();
-Const.width = 1280;
-Const.height = 720;
+Const.width = 800;
+Const.height = 600;
 Const.scale = 0.005;
 Const.hauteur_delestage = 1000;
 
+var bricksScheduledForRemoval
+
 function init() {
+
+	var rendering = false;
 
     Box2DWrapper.init();
     Fluid.init();
@@ -26,10 +30,32 @@ function init() {
         Level.rotate(0.01);
 
         Box2DWrapper.update();
-        Fluid.update();
-        Debuger.update();
-        Palier.update();
-        GenerateurGouttelette.update();
+		GenerateurGouttelette.update();
+
+		//Empeche le chevauchement de plusieurs rendus
+		if(!rendering)
+		{
+			rendering = true;
+			Fluid.update();
+			Debuger.update();
+			Palier.update();
+			rendering = false;
+		}
+
+		//"Best practice" recommandé par Box2DWeb pour supprimer un éléments
+		//Moche, mais fonctionnel
+		window.setInterval(removeObjScheduledForRemoval, 1000/90);
+		bricksScheduledForRemoval = Array();
+		var index = -1;
+		function removeObjScheduledForRemoval()
+		{
+			for(var i = 0; i <= index; i++){
+				world.DestroyBody(bricksScheduledForRemoval[i]);
+				bricksScheduledForRemoval[i] = null;
+			}
+			bricksScheduledForRemoval = Array();
+			index = -1;
+		}
     }
     run();
 
