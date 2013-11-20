@@ -2,7 +2,7 @@ Const = new Object();
 Const.width = 800;
 Const.height = 600;
 Const.scale = 0.005;
-Const.hauteur_delestage = 1000;
+Const.hauteur_delestage = 2000;
 
 var bricksScheduledForRemoval
 
