@@ -29,7 +29,7 @@ define(function (require) {
         initialize: function (options) {
             myself = this;
             myself.render();
-            socket = io.connect('http://10.188.49.155:8080');
+            socket = io.connect('http://192.168.245.1:8080');
             
             this.collection = options.collection;
            
@@ -51,6 +51,9 @@ define(function (require) {
             layer = new Kinetic.Layer();
             
             stage.add(layer);
+            
+            //maintenant que tout est construit, j'ecoute les deplacement physique de l'appareil
+            this.rotateListener();
             
         },
         drawTheBarres : function(){
