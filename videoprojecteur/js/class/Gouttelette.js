@@ -62,6 +62,9 @@ Gouttelette.update = function()
 }
 Gouttelette.delete = function(id)
 {
+	if(Gouttelette.elements[i].x > Const.width / 2)
+		SocketIoWrapper.fallGouttelette();
+
     console.log('Gouttelette ' + id + ' supprimé');
 	bricksScheduledForRemoval.push(this.elements[id].box2d);
     Gouttelette.elements.splice(id, 1);

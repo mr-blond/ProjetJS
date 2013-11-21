@@ -2,11 +2,12 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Test affichage goutelette</title>
+    <title>ProjetJS</title>
     <script src="js\lib/jquery.js"></script>
   <script src="js/polifill.js"></script>
     <script src="js/lib/Box2dWeb-2.1.a.3.min.js"></script>
     <script src="js/class/Box2DWrapper.js"></script>
+    <script src="js/class/SocketIoWrapper.js"></script>
     <script src="js/class/Debuger.js"></script>
     <script src="js/class/GenerateurGouttelette.js"></script>
     <script src="js/class/Gouttelette.js"></script>
@@ -23,58 +24,7 @@
     <canvas id="canvasPalier"></canvas>
     <canvas id="canvasGoutte"></canvas>
     <canvas id="canvasDebug"></canvas>
-
-   <script>
-    //ICI ecouter les événements envoyés par le serveur pour modifier la position des paliers
-
-$(function() {
-   // Connexion à socket.io
-                var socket = io.connect('http://localhost:8080');
-                
-                socket.on('onTargetMove', function(data) {
-                    $('#displayDataPallierFromServ').html('<p> changement de position : ' + data.id + ' - ' + data.x + ' - ' + data.y  + ' - ' + data.rotation + '</p>');
-
-                    /*Palier.move(data.id, data.x, data.y, data.rotation);
-
-                    if(data.id !== mustTurn){
-                        mustTurn = data.id;
-                        var infoServo = {'pos':mustTurn*40,'pin':12};
-                        socket.emit('servo', infoServo); // Transmet le message aux autres
-                    }*/
-                });
-
-                socket.on('stageRotation', function(data) {
-                    $('#displayDataRotationFromServ').html('<p> rotation de la tablette : ' +  data.rotation + '</p>');
-                        console.log('stageRotation : ' + data.rotation)
-                
-                });
-
-                var ControlServo = {
-
-                  
-                    openWater : function(){
-                        socket.emit('servo', {'pos':130,'pin':12}); 
-                    },
-
-                    //fermeture du flux d'eau
-                    closeWater  : function(){                      
-                        socket.emit('servo',{'pos':000,'pin':12}); 
-                    },
-                     //tourner kle rouleau
-                    startTurn  : function(){                       
-                        socket.emit('servo', {'pos':000,'pin':11}); 
-                    },
-
-                     //stoper le rouleau
-                    stopTurn  : function(){                        
-                        socket.emit('servo', {'pos':010,'pin':11}); 
-                    }
-                }
-
-                window.control = Object.create(ControlServo);
-                window.control.closeWater();
-});
-               
-        </script>
+	<div id="reel">Réel</div>
+	<div id="virtuel">Virtuel</div>
 </body>
 </html>

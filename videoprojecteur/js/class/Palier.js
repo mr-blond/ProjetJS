@@ -74,9 +74,11 @@ Palier.prototype = {
         Palier.context.rect(-this.width / 2, -this.height / 2, this.width, this.height);
         Palier.context.fillStyle = '#333333';
         Palier.context.fill();
+		/*
         Palier.context.lineWidth = 1;
         Palier.context.strokeStyle = 'black';
         Palier.context.stroke();
+        */
         Palier.context.restore();
     },
     moveTo: function (x, y, angle)

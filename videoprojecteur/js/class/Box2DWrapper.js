@@ -23,11 +23,16 @@ Box2DWrapper.init = function()
     this.fixDef = new this.b2FixtureDef;
     this.fixDef.density = 100000.0;
     this.fixDef.friction = 0.3;
-    this.fixDef.restitution = 0.2;
+    this.fixDef.restitution = 0.1;
     this.bodyDef = new this.b2BodyDef;
 }
 Box2DWrapper.update = function()
 {
     Box2DWrapper.world.Step(1 / 60, 10, 10);
     Box2DWrapper.world.ClearForces();
+};
+Box2DWrapper.reset = function() {
+	for ( var i = 0; i < Gouttelette.elements.length; i++) {
+		this.world.DestroyBody(Gouttelette.elements[i].box2d);
+	}
 };

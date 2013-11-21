@@ -4,13 +4,14 @@ Const.height = 600;
 Const.scale = 0.005;
 Const.hauteur_delestage = 2000;
 
-var bricksScheduledForRemoval
+var bricksScheduledForRemoval;
 
 function init() {
 
 	var rendering = false;
 
     Box2DWrapper.init();
+    SocketIoWrapper.init();
     Fluid.init();
     Gouttelette.init();
     GenerateurGouttelette.init();
@@ -18,18 +19,16 @@ function init() {
     Level.init();
     Debuger.init();
 
-    var merde = 600;
-    //Palier.move(0, 600, 200, 3);
-
     function run() {
         requestAnimFrame(run);
 
-
-        merde +=0.7;
+        /*
         Palier.move(4, merde, 500, merde / 100);
         Level.rotate(0.01);
+		*/
 
         Box2DWrapper.update();
+        SocketIoWrapper.update();
 		GenerateurGouttelette.update();
 
 		//Empeche le chevauchement de plusieurs rendus
@@ -41,22 +40,23 @@ function init() {
 			Palier.update();
 			rendering = false;
 		}
-
-		//"Best practice" recommandé par Box2DWeb pour supprimer un éléments
-		//Moche, mais fonctionnel
-		window.setInterval(removeObjScheduledForRemoval, 1000/90);
-		bricksScheduledForRemoval = Array();
-		var index = -1;
-		function removeObjScheduledForRemoval()
-		{
-			for(var i = 0; i <= index; i++){
-				world.DestroyBody(bricksScheduledForRemoval[i]);
-				bricksScheduledForRemoval[i] = null;
-			}
-			bricksScheduledForRemoval = Array();
-			index = -1;
-		}
     }
     run();
+
+
+	//"Best practice" recommandé pour supprimer un éléments box2d
+	//Dégoutant, et ne semble pas fonctionner
+	//Etant donnée que DestroyBody ne renvoie aucune erreur ou confirmation quelque soit le cas de figure, difficile d'en juger
+	window.setInterval(removeObjScheduledForRemoval, 1000/90);
+	bricksScheduledForRemoval = Array();
+	function removeObjScheduledForRemoval()
+	{
+		var index = bricksScheduledForRemoval.length;
+		for(var i = 0; i < index; i++){
+			Box2DWrapper.world.DestroyBody(bricksScheduledForRemoval[i]);
+			bricksScheduledForRemoval[i] = null;
+		}
+		bricksScheduledForRemoval = Array();
+	}
 
 };

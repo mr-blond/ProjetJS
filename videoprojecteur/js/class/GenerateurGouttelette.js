@@ -11,6 +11,12 @@ GenerateurGouttelette.init = GenerateurGouttelette.clear = function()
 {
     GenerateurGouttelette.elements = [];
 };
+GenerateurGouttelette.create = function(properties)
+{
+	var genGouttelette = new GenerateurGouttelette();
+	genGouttelette.init(properties);
+	GenerateurGouttelette.elements.push(genGouttelette);
+}
 GenerateurGouttelette.rotate = function(angle)
 {
     for (var i = 0, l = GenerateurGouttelette.elements.length; i < l; i++)
@@ -38,8 +44,6 @@ GenerateurGouttelette.prototype =
     constructor: GenerateurGouttelette,
     init: function (properties) {
         Object.extend(this, properties);
-
-        GenerateurGouttelette.elements.push(this);
     },
     update: function ()
     {
