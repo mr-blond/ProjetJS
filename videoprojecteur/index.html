@@ -30,17 +30,17 @@
 $(function() {
    // Connexion à socket.io
                 var socket = io.connect('http://localhost:8080');
-                var mustTurn = 4;
+                
                 socket.on('onTargetMove', function(data) {
                     $('#displayDataPallierFromServ').html('<p> changement de position : ' + data.id + ' - ' + data.x + ' - ' + data.y  + ' - ' + data.rotation + '</p>');
 
-                    Palier.move(data.id, data.x, data.y, data.rotation);
+                    /*Palier.move(data.id, data.x, data.y, data.rotation);
 
                     if(data.id !== mustTurn){
                         mustTurn = data.id;
                         var infoServo = {'pos':mustTurn*40,'pin':12};
                         socket.emit('servo', infoServo); // Transmet le message aux autres
-                    }
+                    }*/
                 });
 
                 socket.on('stageRotation', function(data) {
@@ -48,8 +48,31 @@ $(function() {
                         console.log('stageRotation : ' + data.rotation)
                 
                 });
-                
-              console.log('endScript');  
+
+                var ControlServo = {
+
+                  
+                    openWater : function(){
+                        socket.emit('servo', {'pos':130,'pin':12}); 
+                    },
+
+                    //fermeture du flux d'eau
+                    closeWater  : function(){                      
+                        socket.emit('servo',{'pos':000,'pin':12}); 
+                    },
+                     //tourner kle rouleau
+                    startTurn  : function(){                       
+                        socket.emit('servo', {'pos':000,'pin':11}); 
+                    },
+
+                     //stoper le rouleau
+                    stopTurn  : function(){                        
+                        socket.emit('servo', {'pos':010,'pin':11}); 
+                    }
+                }
+
+                window.control = Object.create(ControlServo);
+                window.control.closeWater();
 });
                
         </script>
