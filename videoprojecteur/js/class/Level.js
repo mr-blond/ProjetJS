@@ -1,14 +1,16 @@
 function Level(){
 }
 Level.currentAngle = 0;
+Level.largeurCadre = 100;
 Level.init = function()
 {
     Level.json = {
         "palier": [
-            { x: -50, y: Const.height / 2, width: 100, height: Const.height },
-            { x: Const.width, y: Const.height / 2, width: 100, height: Const.height },
-            { x: Const.width / 2, y: -50, width: Const.width, height: 100 },
-            { x: Const.width / 2, y: Const.height + 50, width: Const.width, height: 100 },
+            { x: -50, y: Const.height / 2, width: Level.largeurCadre, height: Const.height + Level.largeurCadre * 2 },
+            { x: Const.width, y: Const.height / 2, width: Level.largeurCadre, height: Const.height / 2 },
+            { x: Const.width / 2, y: -50, width: Const.width + Level.largeurCadre * 2, height: Level.largeurCadre },
+            { x: Const.width / 2, y: Const.height + 50, width: Const.width + Level.largeurCadre * 2, height: Level.largeurCadre },
+
             { x: 50, y: 200, width: 100, height: 10, angle: 0.1 },
             { x: 100, y: 100, width: 100, height: 10, angle: 0.1 },
             { x: 200, y: 150, width: 100, height: 10, angle: 0.1 }

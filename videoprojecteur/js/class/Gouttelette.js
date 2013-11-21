@@ -8,8 +8,8 @@ function Gouttelette() {
     this.canvas = null;
 }
 Gouttelette.elements = Array();
-Gouttelette.ratio_affichage = 3;
-Gouttelette.radius = 5;
+Gouttelette.ratio_affichage = 10;
+Gouttelette.radius = 3;
 Gouttelette.init = function()
 {
     //Mise en cache du dégradé de la goutte
@@ -24,8 +24,8 @@ Gouttelette.init = function()
         Gouttelette.radius * Gouttelette.ratio_affichage,
         Gouttelette.radius * Gouttelette.ratio_affichage,
         Gouttelette.radius * Gouttelette.ratio_affichage);
-    grad.addColorStop(0, 'rgba(0,0,0,1)');
-    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    grad.addColorStop(0, 'rgba(230,50,50,1)');
+    grad.addColorStop(1, 'rgba(230,50,50,0)');
     ncontext.fillStyle = grad;
     ncontext.beginPath();
     ncontext.arc(
