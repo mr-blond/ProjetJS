@@ -29,7 +29,7 @@ define(function (require) {
         initialize: function (options) {
             myself = this;
             myself.render();
-            socket = io.connect('http://192.168.245.1:8080');
+            socket = io.connect('http://192.168.74.50:8080');
             
             this.collection = options.collection;
            
@@ -70,11 +70,24 @@ define(function (require) {
                
                
                //on ajoute des écouteur pour savoir quand l'objet est en déplacement
-                currentPalier.on('dragstart', function(me) {
+                currentPalier.on('dragmove', function(me) {
                     
                     // l'interval permet de limiter le nombre d'envoi d'info au serveur pour améliorer les performances
-                    timer=setInterval(myself.sendData, 300);
+                    //timer=setInterval(myself.sendData, 300);
+                    //myself.sendData();
+                    //console.log(me)
                     currentIndex = me.targetNode.index;
+                    var currentRect = allKineticPlateform[currentIndex];
+                    var currentModel = myself.collection.get(currentIndex);
+                    currentModel.set({x:currentRect.attrs.x,y:currentRect.attrs.y,rotation:currentRect.getRotationDeg()});
+                    socket.emit('slide', {'pos': Math.floor(Math.random()* 110),'pin':11});
+                    //envoyer le tout au serveur pour afficher la nouvelle position sur l'autre écran
+                    socket.emit('targetMove',{
+                        id : currentModel.get('id'),
+                        x : currentModel.get('x'),
+                        y : currentModel.get('y')/*,
+                        rotation : currentModel.get('rotation')*/
+                    }); // Transmet le message aux autres
                    
                 });
 
@@ -100,7 +113,7 @@ define(function (require) {
                 }); // Transmet le message aux autres
             });
         },
-        sendData : function(){
+       /* sendData : function(){
             var currentRect = allKineticPlateform[currentIndex];
             var currentModel = myself.collection.get(currentIndex);
             currentModel.set({x:currentRect.attrs.x,y:currentRect.attrs.y,rotation:currentRect.getRotationDeg()});
@@ -111,9 +124,9 @@ define(function (require) {
                 x : currentModel.get('x'),
                 y : currentModel.get('y')/*,
                 rotation : currentModel.get('rotation')*/
-            }); // Transmet le message aux autres
+            /*}); // Transmet le message aux autres
         }
-        
+        */
        
 
     });

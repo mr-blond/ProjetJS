@@ -6,7 +6,7 @@ require.config({
         app: '../app',
         tpl: '../tpl',
         //@todo, trouver un moyen de chercher la valeur de l'adresse ip automatiquement
-        socketio : 'http://192.168.245.1:8080/socket.io/socket.io.js'
+        socketio : 'http://192.168.74.50:8080/socket.io/socket.io.js'
     },
 
     map: {

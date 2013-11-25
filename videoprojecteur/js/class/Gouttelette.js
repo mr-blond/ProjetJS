@@ -63,7 +63,7 @@ Gouttelette.update = function()
 }
 Gouttelette.delete = function(id)
 {
-	if(Gouttelette.elements[id].x < Const.width / 2)
+	if(Gouttelette.elements[id].x > Const.width / 2)
     {
 		SocketIoWrapper.fallGouttelette();
         console.log('Gouttelette ' + id + ' tombé dans le réel');

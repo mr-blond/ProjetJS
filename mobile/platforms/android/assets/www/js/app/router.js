@@ -35,8 +35,8 @@ define(function (require) {
               var maCollection = new collection.PalierCollection();
               
               var currentModel = '';
-              for(var i=0;i<5;i++){
-                  currentModel = new models.PalierModel({id:i,x:10*i,y:10*i});
+              for(var i=0;i<3;i++){
+                  currentModel = new models.PalierModel({id:i,x:100+ 10*i,y:100+10*i});
                  
                   maCollection.add(currentModel);
               }

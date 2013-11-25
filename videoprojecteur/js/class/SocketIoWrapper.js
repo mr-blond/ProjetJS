@@ -1,6 +1,6 @@
 function SocketIoWrapper() {
 }
-SocketIoWrapper.nbFramePerGouttelette = 1;
+SocketIoWrapper.nbFramePerGouttelette = 20;
 SocketIoWrapper.update = function(){};
 SocketIoWrapper.fallGouttelette = function(){};
 SocketIoWrapper.init = function()
@@ -11,8 +11,8 @@ SocketIoWrapper.init = function()
 
 		SocketIoWrapper.socket.on('onTargetMove', function(data)
 		{
-			console.log('Changement de position : ' + data.id + ' - ' + data.x + ' - ' + data.y  + ' - ' + data.rotation);
-			Palier.move(data.id, data.x, data.y, 0);
+			//console.log('Changement de position : ' + data.id + ' - ' + data.x + ' - ' + data.y);
+			Palier.move(data.id, data.x, data.y);
 
 			/*Palier.move(data.id, data.x, data.y, data.rotation);
 
@@ -30,9 +30,9 @@ SocketIoWrapper.init = function()
 			if(SocketIoWrapper.goutteletteWaitingToFall == 0)
 			{
 				SocketIoWrapper.openWater();
-				//console.log('open');
+				//console.log('openWater');
 			}
-			SocketIoWrapper.goutteletteWaitingToFall += SocketIoWrapper.nbFramePerGouttelette;
+			SocketIoWrapper.goutteletteWaitingToFall = SocketIoWrapper.nbFramePerGouttelette;
 		};
 		SocketIoWrapper.update = function(){
 			if(SocketIoWrapper.goutteletteWaitingToFall > 0)
@@ -41,38 +41,40 @@ SocketIoWrapper.init = function()
 				if(SocketIoWrapper.goutteletteWaitingToFall == 0)
 				{
 					SocketIoWrapper.closeWater();
-					//console.log('close');
+					//console.log('closeWater' + SocketIoWrapper.goutteletteWaitingToFall);
 				}
 			}
 		};
 
 		SocketIoWrapper.socket.on('stageRotation', function(data)
 		{
-			console.log('Rotation de la tablette : ' +  data.rotation);
+			//console.log('Rotation de la tablette : ' +  data.rotation);
 			Level.rotate(data.rotation);
 		});
 
 		SocketIoWrapper.openWater = function()
 		{
-			SocketIoWrapper.socket.emit('servo', {'pos':130,'pin':12});
+			console.log('realOpenWater');
+			SocketIoWrapper.socket.emit('servo', {'pos':130,'pin':10});
 		};
 
 		//fermeture du flux d'eau
 		SocketIoWrapper.closeWater = function()
 		{
-			SocketIoWrapper.socket.emit('servo',{'pos':000,'pin':12});
+			console.log('realCloseWater');
+			SocketIoWrapper.socket.emit('servo',{'pos':000,'pin':10});
 		};
 
 		//tourner kle rouleau
 		SocketIoWrapper.startTurn = function()
 		{
-			SocketIoWrapper.socket.emit('servo', {'pos':000,'pin':11});
+			SocketIoWrapper.socket.emit('servo', {'pos':000,'pin':13});
 		};
 
 		//stoper le rouleau
 		SocketIoWrapper.stopTurn = function()
 		{
-			SocketIoWrapper.socket.emit('servo', {'pos':090,'pin':11});
+			SocketIoWrapper.socket.emit('servo', {'pos':090,'pin':13});
 		};
 
 
@@ -81,11 +83,15 @@ SocketIoWrapper.init = function()
 			SocketIoWrapper.startTurn();
 			setTimeout(function(){
 				SocketIoWrapper.stopTurn();
-				setTimeout(SocketIoWrapper.majRotate,15*60*1000);
-			},200	);
+				
+			},500	);
 			console.log(1);
 		}
-		SocketIoWrapper.majRotate();
+		setInterval(SocketIoWrapper.majRotate,60*1000);
+
+		//Init Goutelette
+		SocketIoWrapper.openWater();
+		setTimeout(SocketIoWrapper.closeWater, 500);
 	}
 	else
 	{

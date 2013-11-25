@@ -1,8 +1,9 @@
 Const = new Object();
-Const.width = 800;
+Const.width = 1266;
 Const.height = 600;
 Const.scale = 0.005;
-Const.hauteur_delestage = 2000;
+Const.hauteur_delestage = 600;
+Const.proportion_mobile_videoprojecteur = 2;
 
 var bricksScheduledForRemoval;
 
