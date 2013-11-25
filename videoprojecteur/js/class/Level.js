@@ -16,7 +16,7 @@ Level.init = function()
 
 			//Angle du bas
             { x: Const.width * 1/4, y: Const.height, width: Const.width / 2 + 7, height: Level.largeurCadre / 2, angle: -0.1 },
-            { x: Const.width * 1/4 - 50, y: Const.height - 80, width: Const.width / 2 + 83, height: 10, angle: 0.1 },
+            { x: Const.width * 1/4 - 50, y: Const.height - 85, width: Const.width / 2 + 83, height: 10, angle: 0.1 },
             { x: Const.width * 3/4, y: Const.height, width: Const.width / 2 + 7, height: Level.largeurCadre / 2, angle: 0.1 },
 
 			//Palier déplacable
@@ -30,7 +30,7 @@ Level.init = function()
         var palier = new Palier();
         palier.init(entry);
     });
-    GenerateurGouttelette.create({cooldown: 15, x: Const.width / 2});
+    GenerateurGouttelette.create({cooldown: 10, x: Const.width / 2});
 };
 Level.rotate = function(angle)
 {
