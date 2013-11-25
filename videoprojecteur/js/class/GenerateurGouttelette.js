@@ -1,5 +1,6 @@
 function GenerateurGouttelette() {
     this.cooldown = 0;
+    this.current_cooldown = 0;
     this.x = 0;
     this.y = 0;
     this.vx = 0;
@@ -47,10 +48,10 @@ GenerateurGouttelette.prototype =
     },
     update: function ()
     {
-        this.cooldown++;
-        if( 1 < this.cooldown)
+        this.current_cooldown++;
+        if(this.current_cooldown > this.cooldown)
         {
-            this.cooldown = 0;
+            this.current_cooldown = 0;
             Gouttelette.create({
                 type: 1,
                 x: this.x,
