@@ -26,8 +26,6 @@ function init() {
         SocketIoWrapper.update();
 		GenerateurGouttelette.update();
 
-        Level.rotate(0.1);
-
 		//Empeche le chevauchement de plusieurs rendus
 		if(!rendering)
 		{
