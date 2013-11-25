@@ -13,12 +13,10 @@ Level.init = function()
             { x: Const.width / 2, y: -50, width: Const.width + Level.largeurCadre * 2, height: Level.largeurCadre },
             { x: Const.width / 2, y: Const.height + Level.largeurCadre / 2, width: Const.width + Level.largeurCadre * 2, height: Level.largeurCadre },
 			*/
-
-			//Angle du bas
+    //Angle du bas
             { x: Const.width * 1/4, y: Const.height, width: Const.width / 2 + 7, height: Level.largeurCadre / 2, angle: -0.1 },
-            { x: Const.width * 1/4 - 50, y: Const.height - 80, width: Const.width / 2 + 83, height: 10, angle: 0.1 },
-            { x: Const.width * 3/4, y: Const.height, width: Const.width / 2 + 7, height: Level.largeurCadre / 2, angle: 0.1 },
-
+            { x: Const.width * 1/4 - 50, y: Const.height - 115, width: Const.width / 2 + 83, height: 10, angle: 0.15 },
+            { x: Const.width * 3/4, y: Const.height + 45, width: Const.width / 2 +55, height: Level.largeurCadre / 2, angle: 0.3 },
 			//Palier déplacable
             { x: 400, y: 100, width: 100, height: 10, angle: -0.1 },
             { x: 300, y: 170, width: 100, height: 10, angle: 0.1 },
