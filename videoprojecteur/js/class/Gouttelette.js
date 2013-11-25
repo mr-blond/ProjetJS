@@ -55,17 +55,21 @@ Gouttelette.update = function()
 		if(Gouttelette.elements[i])
 		{
 			Gouttelette.elements[i].draw();
-			if(Gouttelette.elements[i].y > Const.hauteur_delestage)
-				Gouttelette.delete(i);
+			/*if(Gouttelette.elements[i].y > Const.hauteur_delestage)
+				Gouttelette.delete(i);*/
+                if(Gouttelette.elements[i].y > 12)
+                Gouttelette.delete(i);
 		}
     }
 }
 Gouttelette.delete = function(id)
 {
-	if(Gouttelette.elements[i].x > Const.width / 2)
+	if(Gouttelette.elements[i].x < Const.width / 2){        
 		SocketIoWrapper.fallGouttelette();
+         console.log('Gouttelette ' + id + ' supprimé');
+    }
 
-    console.log('Gouttelette ' + id + ' supprimé');
+   
 	bricksScheduledForRemoval.push(this.elements[id].box2d);
     Gouttelette.elements.splice(id, 1);
 }

@@ -1,79 +1,91 @@
 function SocketIoWrapper() {
 }
-SocketIoWrapper.nbFramePerGouttelette = 30;
+SocketIoWrapper.nbFramePerGouttelette = 1;
 SocketIoWrapper.update = function(){};
 SocketIoWrapper.fallGouttelette = function(){};
 SocketIoWrapper.init = function()
 {
 	if(typeof io != 'undefined')
 	{
-		this.socket = io.connect('http://localhost:8080');
+		SocketIoWrapper.socket = io.connect('http://localhost:8080');
 
-		this.socket.on('onTargetMove', function(data)
+		SocketIoWrapper.socket.on('onTargetMove', function(data)
 		{
 			console.log('Changement de position : ' + data.id + ' - ' + data.x + ' - ' + data.y  + ' - ' + data.rotation);
-			Palier.move(data.id, data.x, data.y, data.rotation);
+			Palier.move(data.id, data.x, data.y, 0);
 
 			/*Palier.move(data.id, data.x, data.y, data.rotation);
 
 			 if(data.id !== mustTurn){
 			 mustTurn = data.id;
-			 var infoServo = {'pos':mustTurn*40,'pin':12};
+			 var infoServo = {'pos':mustTur*40,'pin':12};
 			 socket.emit('servo', infoServo); // Transmet le message aux autres
 			 }*/
 		});
 
-		this.goutteletteWaitingToFall = 0;
+		SocketIoWrapper.goutteletteWaitingToFall = 0;
 		SocketIoWrapper.fallGouttelette = function()
 		{
-			if(goutteletteWaitingToFall == 0)
+			//console.log('fall');
+			if(SocketIoWrapper.goutteletteWaitingToFall == 0)
 			{
-				this.openWater();
+				SocketIoWrapper.openWater();
+				//console.log('open');
 			}
-			this.goutteletteWaitingToFall += this.nbFramePerGouttelette;
+			SocketIoWrapper.goutteletteWaitingToFall += SocketIoWrapper.nbFramePerGouttelette;
 		};
 		SocketIoWrapper.update = function(){
-			this.startTurn();
-			if(this.goutteletteWaitingToFall > 0)
+			if(SocketIoWrapper.goutteletteWaitingToFall > 0)
 			{
-				this.goutteletteWaitingToFall--;
-				if(this.goutteletteWaitingToFall == 0)
+				SocketIoWrapper.goutteletteWaitingToFall--;
+				if(SocketIoWrapper.goutteletteWaitingToFall == 0)
 				{
-					this.closeWater();
+					SocketIoWrapper.closeWater();
+					//console.log('close');
 				}
 			}
 		};
 
-		this.socket.on('stageRotation', function(data)
+		SocketIoWrapper.socket.on('stageRotation', function(data)
 		{
 			console.log('Rotation de la tablette : ' +  data.rotation);
 			Level.rotate(data.rotation);
 		});
 
-		this.openWater = function()
+		SocketIoWrapper.openWater = function()
 		{
-			socket.emit('servo', {'pos':130,'pin':12});
+			SocketIoWrapper.socket.emit('servo', {'pos':130,'pin':12});
 		};
 
 		//fermeture du flux d'eau
-		this.closeWater = function()
+		SocketIoWrapper.closeWater = function()
 		{
-			socket.emit('servo',{'pos':000,'pin':12});
+			SocketIoWrapper.socket.emit('servo',{'pos':000,'pin':12});
 		};
 
 		//tourner kle rouleau
-		this.startTurn = function()
+		SocketIoWrapper.startTurn = function()
 		{
-			socket.emit('servo', {'pos':000,'pin':11});
+			SocketIoWrapper.socket.emit('servo', {'pos':000,'pin':11});
 		};
 
 		//stoper le rouleau
-		this.stopTurn = function()
+		SocketIoWrapper.stopTurn = function()
 		{
-			socket.emit('servo', {'pos':010,'pin':11});
+			SocketIoWrapper.socket.emit('servo', {'pos':090,'pin':11});
 		};
 
-		this.closeWater();
+
+		SocketIoWrapper.majRotate = function()
+		{
+			SocketIoWrapper.startTurn();
+			setTimeout(function(){
+				SocketIoWrapper.stopTurn();
+				setTimeout(SocketIoWrapper.majRotate,15*60*1000);
+			},200	);
+			console.log(1);
+		}
+		SocketIoWrapper.majRotate();
 	}
 	else
 	{
