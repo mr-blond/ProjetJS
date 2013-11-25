@@ -55,10 +55,9 @@ Gouttelette.update = function()
 		if(Gouttelette.elements[i])
 		{
 			Gouttelette.elements[i].draw();
-			/*if(Gouttelette.elements[i].y > Const.hauteur_delestage)
-				Gouttelette.delete(i);*/
-                if(Gouttelette.elements[i].y > 12)
-                Gouttelette.delete(i);
+			if(Gouttelette.elements[i].y > Const.hauteur_delestage)
+				Gouttelette.delete(i);
+         
 		}
     }
 }

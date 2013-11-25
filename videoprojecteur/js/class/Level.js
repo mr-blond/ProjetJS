@@ -33,6 +33,7 @@ Level.init = function()
 Level.rotate = function(angle)
 {
     var dif = this.currentAngle - angle;
+    this.currentAngle = angle;
     Palier.rotate(dif);
     GenerateurGouttelette.rotate(dif);
     //Modifier la position des élemnts pose des problèmes a Box2D
