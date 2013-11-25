@@ -32,11 +32,11 @@ Level.init = function()
 };
 Level.rotate = function(angle)
 {
-    angle *= (Math.PI/180);
+    angle *= (Math.PI/180) / 100;
     var dif = this.currentAngle - angle;
     this.currentAngle = angle;
     Palier.rotate(dif);
-    GenerateurGouttelette.rotate(dif);
+    //GenerateurGouttelette.rotate(dif);
     //Modifier la position des élemnts pose des problèmes a Box2D
     //Tant que la rotation reste progressive, inutile de les déplacer
     //Fluid.rotate(dif);
