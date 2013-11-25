@@ -22,11 +22,6 @@ function init() {
     function run() {
         requestAnimFrame(run);
 
-        /*
-        Palier.move(4, merde, 500, merde / 100);
-        Level.rotate(0.01);
-		*/
-
         Box2DWrapper.update();
         SocketIoWrapper.update();
 		GenerateurGouttelette.update();
@@ -45,9 +40,10 @@ function init() {
 
 
 	//"Best practice" recommandé pour supprimer un éléments box2d
-	//Dégoutant, et ne semble pas fonctionner
+	//Dégoutant, et ne fonctionne pas
 	//Etant donnée que DestroyBody ne renvoie aucune erreur ou confirmation quelque soit le cas de figure, difficile d'en juger
-	window.setInterval(removeObjScheduledForRemoval, 1000/90);
+	//Il faudrais réorganiser le systéme de rendu pour pouvoir bloquer le rendu physique le temps de supprimer ces éléments
+    window.setInterval(removeObjScheduledForRemoval, 1000/90);
 	bricksScheduledForRemoval = Array();
 	function removeObjScheduledForRemoval()
 	{

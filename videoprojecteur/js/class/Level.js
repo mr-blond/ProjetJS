@@ -16,6 +16,7 @@ Level.init = function()
 
 			//Angle du bas
             { x: Const.width * 1/4, y: Const.height, width: Const.width / 2 + 7, height: Level.largeurCadre / 2, angle: -0.1 },
+            { x: Const.width * 1/4 - 50, y: Const.height - 85, width: Const.width / 2 + 83, height: 10, angle: 0.1 },
             { x: Const.width * 3/4, y: Const.height, width: Const.width / 2 + 7, height: Level.largeurCadre / 2, angle: 0.1 },
 
 			//Palier déplacable

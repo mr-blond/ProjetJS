@@ -21,8 +21,6 @@ Fluid.render = function ()
     for (var i = 3, l = data.length; i < l; i += 4) {
         if (data[i] < Fluid.threshold)
             data[i] = 0;
-        else if(data[i] == Fluid.threshold)
-            data[i] = 120;
         else
 			data[i] = 255;
     }
