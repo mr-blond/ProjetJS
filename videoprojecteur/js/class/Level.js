@@ -32,6 +32,7 @@ Level.init = function()
 };
 Level.rotate = function(angle)
 {
+    angle *= (Math.PI/180);
     var dif = this.currentAngle - angle;
     this.currentAngle = angle;
     Palier.rotate(dif);
