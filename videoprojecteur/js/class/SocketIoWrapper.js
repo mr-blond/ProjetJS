@@ -14,13 +14,13 @@ SocketIoWrapper.init = function()
 			//console.log('Changement de position : ' + data.id + ' - ' + data.x + ' - ' + data.y);
 			Palier.move(data.id, data.x, data.y);
 
-			/*Palier.move(data.id, data.x, data.y, data.rotation);
-
+			/*
 			 if(data.id !== mustTurn){
 			 mustTurn = data.id;
 			 var infoServo = {'pos':mustTur*40,'pin':12};
 			 socket.emit('servo', infoServo); // Transmet le message aux autres
-			 }*/
+			 }
+			*/
 		});
 
 		SocketIoWrapper.goutteletteWaitingToFall = 0;
@@ -30,7 +30,6 @@ SocketIoWrapper.init = function()
 			if(SocketIoWrapper.goutteletteWaitingToFall == 0)
 			{
 				SocketIoWrapper.openWater();
-				//console.log('openWater');
 			}
 			SocketIoWrapper.goutteletteWaitingToFall = SocketIoWrapper.nbFramePerGouttelette;
 		};
@@ -40,44 +39,48 @@ SocketIoWrapper.init = function()
 				SocketIoWrapper.goutteletteWaitingToFall--;
 				if(SocketIoWrapper.goutteletteWaitingToFall == 0)
 				{
+                    //console.log('stopfall');
 					SocketIoWrapper.closeWater();
-					//console.log('closeWater' + SocketIoWrapper.goutteletteWaitingToFall);
 				}
 			}
 		};
 
+        //Rotation de la tablette
 		SocketIoWrapper.socket.on('stageRotation', function(data)
 		{
 			//console.log('Rotation de la tablette : ' +  data.rotation);
 			Level.rotate(data.rotation);
 		});
 
+        //ouverture du flux d'eau
 		SocketIoWrapper.openWater = function()
 		{
-			console.log('realOpenWater');
+			console.log('openWater');
 			SocketIoWrapper.socket.emit('servo', {'pos':130,'pin':10});
 		};
 
 		//fermeture du flux d'eau
 		SocketIoWrapper.closeWater = function()
 		{
-			console.log('realCloseWater');
+			console.log('closeWater');
 			SocketIoWrapper.socket.emit('servo',{'pos':000,'pin':10});
 		};
 
-		//tourner kle rouleau
+		//tourner le rouleau
 		SocketIoWrapper.startTurn = function()
 		{
+            //console.log('startTurn');
 			SocketIoWrapper.socket.emit('servo', {'pos':000,'pin':13});
 		};
 
 		//stoper le rouleau
 		SocketIoWrapper.stopTurn = function()
 		{
+            //console.log('stopTurn');
 			SocketIoWrapper.socket.emit('servo', {'pos':090,'pin':13});
 		};
 
-
+        //Tourne le rouleau d'un cran
 		SocketIoWrapper.majRotate = function()
 		{
 			SocketIoWrapper.startTurn();

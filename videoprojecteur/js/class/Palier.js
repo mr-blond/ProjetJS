@@ -7,6 +7,7 @@ function Palier() {
     this.width = 0;
     this.angle = 0;
 }
+Palier.amorti_drag_and_drop = 0;    //Taux à laquel le déplacement du drag and drop est lissé
 Palier.elements = Array();
 Palier.init = function()
 {
@@ -34,7 +35,7 @@ Palier.rotate = function(angle)
             palier.x -= Const.width / 2;
             palier.y -= Const.height / 2;
             var newX = (palier.x) * Math.cos(-angle) - (palier.y) * Math.sin(-angle);
-            palier.y   = (palier.x) * Math.sin(-angle) + (palier.y) * Math.cos(-angle);
+            palier.y = (palier.x) * Math.sin(-angle) + (palier.y) * Math.cos(-angle);
             palier.x = newX;
             palier.x += Const.width / 2;
             palier.y += Const.height / 2;
@@ -78,10 +79,11 @@ Palier.prototype = {
     },
     update: function ()
     {
-        //this.x_phy = this.x_phy * 0.8 + this.x * 0.2;
-        //this.y_phy = this.y_phy * 0.8 + this.y * 0.2;
-        this.x_phy = this.x_phy * 0 + this.x ;
-        this.y_phy = this.y_phy * 0 + this.y ;
+        this.x_phy = this.x_phy * Palier.amorti_drag_and_drop + this.x * (1 - Palier.amorti_drag_and_drop) ;
+        this.y_phy = this.y_phy * Palier.amorti_drag_and_drop + this.y * (1 - Palier.amorti_drag_and_drop) ;
+
+        //Le moteur Box2D n'aprécie pas les modifications fréquentes de coordonnées
+        //Mieux vaut le gêrer par palier, quitte à étre légérement découplé de l'affichage
         //this.box2d.GetBody().GetPosition().x = this.x_phy;
         //this.box2d.GetBody().GetPosition().y = this.y_phy;
     },
@@ -96,12 +98,9 @@ Palier.prototype = {
         Palier.context.fillStyle = this.color;
         Palier.context.fill();
         /*
-        if(!this.fixed)
-        {
         Palier.context.lineWidth = 3;
         Palier.context.strokeStyle = 'black';
         Palier.context.stroke();
-        }
         */
         Palier.context.restore();
     },
@@ -110,7 +109,6 @@ Palier.prototype = {
         console.log(Const.proportion_mobile_videoprojecteur);
         this.x = x * Const.proportion_mobile_videoprojecteur;
         this.y = y * Const.proportion_mobile_videoprojecteur;
-        //this.angle = angle;
 
         this.box2d.GetBody().SetPosition(new Box2DWrapper.b2Vec2(this.x * Const.scale, this.y * Const.scale));
     }
