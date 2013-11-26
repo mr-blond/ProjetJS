@@ -10,7 +10,6 @@ define(function (require) {
         io                  = require('socketio'),
         template = _.template(tpl),
         myself,
-        timer,
         socket,
         layer,
         currentIndex,
@@ -30,7 +29,10 @@ define(function (require) {
             myself = this;
             myself.render();
             socket = io.connect('http://192.168.74.50:8080');
-            
+            socket.on('posPalier', function (data) {
+                console.log(data);
+   
+            }); 
             this.collection = options.collection;
            
         },
@@ -52,6 +54,7 @@ define(function (require) {
             
             stage.add(layer);
             
+            socket.emit('askPos','data'); // Transmet le message aux autres
             //maintenant que tout est construit, j'ecoute les deplacement physique de l'appareil
             this.rotateListener();
             
@@ -68,15 +71,13 @@ define(function (require) {
                 layer.add(currentPalier);
                // console.log(currentPalier);
                
-               
+               currentPalier.on('dragstart', function(me) {
+                   currentIndex = me.targetNode.index;
+                    
+               });
                //on ajoute des écouteur pour savoir quand l'objet est en déplacement
                 currentPalier.on('dragmove', function(me) {
-                    
-                    // l'interval permet de limiter le nombre d'envoi d'info au serveur pour améliorer les performances
-                    //timer=setInterval(myself.sendData, 300);
-                    //myself.sendData();
-                    //console.log(me)
-                    currentIndex = me.targetNode.index;
+                    me.targetNode.setFill('#000');   
                     var currentRect = allKineticPlateform[currentIndex];
                     var currentModel = myself.collection.get(currentIndex);
                     currentModel.set({x:currentRect.attrs.x,y:currentRect.attrs.y,rotation:currentRect.getRotationDeg()});
@@ -85,15 +86,16 @@ define(function (require) {
                     socket.emit('targetMove',{
                         id : currentModel.get('id'),
                         x : currentModel.get('x'),
-                        y : currentModel.get('y')/*,
-                        rotation : currentModel.get('rotation')*/
+                        y : currentModel.get('y')
                     }); // Transmet le message aux autres
                    
                 });
 
                 currentPalier.on('dragend', function() {
-                    //console.log('clear the interval');
-                    clearInterval(timer);
+                  
+                    var currentRect = allKineticPlateform[currentIndex];
+                   currentRect.setFill('#424242');
+                   layer.draw();
                 });
                 allKineticPlateform.push(currentPalier);
             });

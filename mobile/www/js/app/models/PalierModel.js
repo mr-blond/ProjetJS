@@ -16,8 +16,8 @@ define(function (require) {
                 width: 130,
                 height: 30,
                 rotation: 0,
-                fill: 'white',
-                stroke: 'black',
+                fill: '#424242',
+                stroke: 'white',
                 strokeWidth: 2,
                 //centrer l'element
                 offset: [115, 15],
